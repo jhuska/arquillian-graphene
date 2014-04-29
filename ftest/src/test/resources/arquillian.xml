@@ -50,7 +50,7 @@
         <property name="remote">false</property>
     </extension>
     
-    <extension qualifier="webdriver-browser2">
+    <extension qualifier="webdriver-browser3">
         <property name="browser">firefox</property>
         <property name="remote">false</property>
     </extension>
