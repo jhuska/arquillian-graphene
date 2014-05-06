@@ -54,6 +54,11 @@
         <property name="browser">firefox</property>
         <property name="remote">false</property>
     </extension>
+    
+    <extension qualifier="webdriver-browser4">
+        <property name="browser">firefox</property>
+        <property name="remote">false</property>
+    </extension>
 
     <!-- Set a different remote address then default for RemoteReusableTesting -->
     <extension qualifier="webdriver-reusable">
@@ -74,7 +79,7 @@
             </property>
             <property name="user">tomcat</property>
             <property name="pass">tomcat</property>
-            <property name="catalinaHome">target/apache-tomcat-7.0.26</property>
+            <property name="catalinaHome">target/apache-tomcat-7.0.47</property>
         </configuration>
     </container>
 </arquillian>
