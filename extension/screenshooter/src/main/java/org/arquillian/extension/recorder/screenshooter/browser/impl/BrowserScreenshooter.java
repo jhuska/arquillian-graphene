@@ -35,6 +35,7 @@ import org.jboss.arquillian.drone.api.annotation.Default;
 import org.jboss.arquillian.drone.webdriver.factory.remote.reusable.ReusableRemoteWebDriver;
 import org.jboss.arquillian.graphene.context.GrapheneContext;
 import org.jboss.arquillian.graphene.proxy.GrapheneProxyInstance;
+import org.jboss.arquillian.graphene.proxy.Interceptor;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -168,9 +169,9 @@ public class BrowserScreenshooter implements Screenshooter {
      *
      * @param interceptor
      */
-    private void unregisterInterceptor(AbstractTakeScreenshotInterceptor interceptor) {
+    private void unregisterInterceptor(Interceptor interceptor) {
         if (interceptor != null) {
-            interceptor.unregisterThis(getBrowser());
+            ((GrapheneProxyInstance) getBrowser()).unregisterInterceptor(interceptor);
         }
     }
 
@@ -181,9 +182,9 @@ public class BrowserScreenshooter implements Screenshooter {
      *
      * @param interceptor
      */
-    private void registerInterceptor(AbstractTakeScreenshotInterceptor interceptor) {
+    private void registerInterceptor(Interceptor interceptor) {
         if (interceptor != null) {
-            interceptor.registerThis(getBrowser());
+            ((GrapheneProxyInstance) getBrowser()).registerInterceptor(interceptor);
         }
     }
 

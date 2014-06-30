@@ -18,7 +18,9 @@ package org.arquillian.extension.recorder.screenshooter.browser;
 
 import org.arquillian.extension.recorder.screenshooter.browser.configuration.BrowserScreenshooterConfigurator;
 import org.arquillian.extension.recorder.screenshooter.browser.impl.BrowserScreenshooterExtensionInitializer;
-import org.arquillian.extension.recorder.screenshooter.browser.impl.BrowserScreenshooterLifecycleObserver;
+import org.arquillian.extension.recorder.screenshooter.browser.impl.ScreenshotTaker;
+import org.arquillian.extension.recorder.screenshooter.browser.impl.TakeScreenshotAndReportService;
+import org.arquillian.extension.recorder.screenshooter.impl.ScreenshooterLifecycleObserver;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
 /**
@@ -31,6 +33,8 @@ public class BrowserScreenshooterExtension implements LoadableExtension {
     public void register(ExtensionBuilder builder) {
         builder.observer(BrowserScreenshooterExtensionInitializer.class);
         builder.observer(BrowserScreenshooterConfigurator.class);
-        builder.observer(BrowserScreenshooterLifecycleObserver.class);
+        builder.observer(ScreenshotTaker.class);
+        builder.observer(ScreenshooterLifecycleObserver.class);
+        builder.service(TakeScreenshotAndReportService.class, TakeScreenshotAndReportService.class);
     }
 }

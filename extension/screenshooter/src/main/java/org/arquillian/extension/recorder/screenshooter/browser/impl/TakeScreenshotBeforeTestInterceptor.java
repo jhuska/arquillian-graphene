@@ -16,10 +16,6 @@
  */
 package org.arquillian.extension.recorder.screenshooter.browser.impl;
 
-import org.arquillian.extension.recorder.DefaultFileNameBuilder;
-import org.arquillian.extension.recorder.When;
-import org.arquillian.extension.recorder.screenshooter.event.AfterScreenshotTaken;
-import org.arquillian.extension.recorder.screenshooter.event.BeforeScreenshotTaken;
 import org.arquillian.extension.recorder.screenshooter.event.TakeScreenshot;
 import org.jboss.arquillian.graphene.proxy.InvocationContext;
 
@@ -29,27 +25,18 @@ import org.jboss.arquillian.graphene.proxy.InvocationContext;
  */
 public class TakeScreenshotBeforeTestInterceptor extends AbstractTakeScreenshotInterceptor {
 
+    public TakeScreenshotBeforeTestInterceptor(TakeScreenshot takeScreenshotEvent, TakeScreenshotAndReportService service) {
+        super(takeScreenshotEvent, service);
+    }
+    
     @Override
     public Object intercept(InvocationContext context) throws Throwable {
         Object result = context.invoke();
 
         if (context.getMethod().getName().equals("get")) {
-
-            When when = When.BEFORE;
-            metaData.setOptionalDescription("get");
-
-            DefaultFileNameBuilder nameBuilder = DefaultFileNameBuilder.getInstance();
-            String screenshotName = nameBuilder
-                    .withMetaData(metaData)
-                    .withStage(when)
-                    .withResourceIdentifier(ResourceIdentifierFactory.getResoruceIdentifier(metaData, when))
-                    .build();
-
-
-            beforeScreenshotTaken.fire(new BeforeScreenshotTaken(metaData));
-            takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, when));
-            afterScreenshotTaken.fire(new AfterScreenshotTaken(metaData));
+            takeScreenshotAndReport();
         }
         return result;
     }
+    
 }

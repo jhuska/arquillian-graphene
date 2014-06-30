@@ -70,22 +70,22 @@ public class BrowserScreenshooterLifecycleObserver {
 
     public void beforeObserver(@Observes(precedence = Integer.MAX_VALUE) Before event) {
         ScreenshotMetaData metaData = getMetaData(event);
-        AbstractTakeScreenshotInterceptor takeScreenshotInterceptor = null;
+//        AbstractTakeScreenshotInterceptor takeScreenshotInterceptor = null;
         metaData.setResourceType(getScreenshotType());
 
         WebDriver browser = GrapheneContext.getContextFor(Default.class).getWebDriver();
 
         if (((BrowserScreenshooterConfiguration) configuration.get()).getTakeOnEveryAction()) {
-            takeScreenshotInterceptor = takeScreenshotOnEveryActionInterceptor.get();
-            takeScreenshotInterceptor.registerThis(browser);
-            takeScreenshotInterceptor.setupThis(configuration.get(), beforeScreenshotTaken, afterScreenshotTaken,
-                    takeScreenshot, metaData);
+//            takeScreenshotInterceptor = takeScreenshotOnEveryActionInterceptor.get();
+//            takeScreenshotInterceptor.registerThis(browser);
+//            takeScreenshotInterceptor.setupThis(configuration.get(), beforeScreenshotTaken, afterScreenshotTaken,
+//                    takeScreenshot, metaData);
         }
         if (configuration.get().getTakeBeforeTest()) {
-            takeScreenshotInterceptor = takeScreenshotBeforeTestInterceptor.get();
-            takeScreenshotInterceptor.registerThis(browser);
-            takeScreenshotInterceptor.setupThis(configuration.get(), beforeScreenshotTaken, afterScreenshotTaken,
-                    takeScreenshot, metaData);
+//            takeScreenshotInterceptor = takeScreenshotBeforeTestInterceptor.get();
+//            takeScreenshotInterceptor.registerThis(browser);
+//            takeScreenshotInterceptor.setupThis(configuration.get(), beforeScreenshotTaken, afterScreenshotTaken,
+//                    takeScreenshot, metaData);
         }
     }
 

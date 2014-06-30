@@ -26,7 +26,7 @@
 
     <!-- Properties -->
     <properties>
-        <version.recorder.screenshooter>1.0.0.Alpha3</version.recorder.screenshooter>
+        <version.recorder.screenshooter>1.0.0.Alpha4-SNAPSHOT</version.recorder.screenshooter>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -34,6 +34,11 @@
         <dependency>
             <groupId>org.arquillian.extension</groupId>
             <artifactId>arquillian-recorder-screenshooter-impl-base</artifactId>
+            <version>${version.recorder.screenshooter}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.arquillian.extension</groupId>
+            <artifactId>arquillian-recorder-screenshooter-spi</artifactId>
             <version>${version.recorder.screenshooter}</version>
         </dependency>
         <dependency>

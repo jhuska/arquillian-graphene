@@ -18,7 +18,6 @@ package org.arquillian.extension.recorder.screenshooter.browser.impl;
 
 import org.arquillian.extension.recorder.screenshooter.Screenshooter;
 import org.arquillian.extension.recorder.screenshooter.ScreenshooterConfiguration;
-import org.arquillian.extension.recorder.screenshooter.browser.configuration.BrowserScreenshooterConfiguration;
 import org.arquillian.extension.recorder.screenshooter.event.ScreenshooterExtensionConfigured;
 import org.arquillian.recorder.reporter.impl.TakenResourceRegister;
 import org.jboss.arquillian.core.api.Instance;
@@ -27,8 +26,6 @@ import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.ServiceLoader;
-import org.jboss.arquillian.drone.api.annotation.Default;
-import org.jboss.arquillian.graphene.context.GrapheneContext;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
@@ -45,18 +42,7 @@ public class BrowserScreenshooterExtensionInitializer {
     private InstanceProducer<TakenResourceRegister> takenResourceRegister;
 
     @Inject
-    @ApplicationScoped
-    private InstanceProducer<TakeScreenshotOnEveryActionInterceptor> takeScreenshotOnEveryActionInterceptor;
-
-    @Inject
-    @ApplicationScoped
-    private InstanceProducer<TakeScreenshotBeforeTestInterceptor> takeScreenshotBeforeTestInterceptor;
-
-    @Inject
     private Instance<ScreenshooterConfiguration> configuration;
-
-    @Inject
-    private Instance<ServiceLoader> serviceLoader;
 
     /**
      * Creates {@link Screenshooter} instance.
@@ -64,9 +50,6 @@ public class BrowserScreenshooterExtensionInitializer {
      * @param event
      */
     public void onScreenshooterExtensionConfigured(@Observes(precedence = Integer.MIN_VALUE) ScreenshooterExtensionConfigured event) {
-        TakeScreenshotOnEveryActionInterceptor takeScreenshotOnEveryActionInterceptor = new TakeScreenshotOnEveryActionInterceptor();
-        TakeScreenshotBeforeTestInterceptor takeScreenshotBeforeTestInterceptor = new TakeScreenshotBeforeTestInterceptor();
-
         if (takenResourceRegister.get() == null) {
             this.takenResourceRegister.set(new TakenResourceRegister());
         }
@@ -74,14 +57,6 @@ public class BrowserScreenshooterExtensionInitializer {
         BrowserScreenshooter screenshooter = new BrowserScreenshooter(takenResourceRegister.get());
         screenshooter.init(configuration.get());
 
-        if(((BrowserScreenshooterConfiguration) configuration.get()).getTakeOnEveryAction()) {
-            screenshooter.setTakeScreenshoOnEveryActionInterceptor(takeScreenshotOnEveryActionInterceptor);
-        } else if(configuration.get().getTakeBeforeTest()) {
-            screenshooter.setTakeScreenshotBeforeTestInterceptor(takeScreenshotBeforeTestInterceptor);
-        }
-
-        this.takeScreenshotOnEveryActionInterceptor.set(takeScreenshotOnEveryActionInterceptor);
-        this.takeScreenshotBeforeTestInterceptor.set(takeScreenshotBeforeTestInterceptor);
         this.screenshooter.set(screenshooter);
     }
 }

@@ -17,13 +17,13 @@
 package org.arquillian.extension.recorder.screenshooter.browser.impl;
 
 import java.lang.reflect.Method;
-
-import org.arquillian.extension.recorder.DefaultFileNameBuilder;
-import org.arquillian.extension.recorder.When;
-import org.arquillian.extension.recorder.screenshooter.event.AfterScreenshotTaken;
-import org.arquillian.extension.recorder.screenshooter.event.BeforeScreenshotTaken;
+import java.util.Arrays;
+import java.util.List;
 import org.arquillian.extension.recorder.screenshooter.event.TakeScreenshot;
+import org.jboss.arquillian.graphene.proxy.Interceptor;
+
 import org.jboss.arquillian.graphene.proxy.InvocationContext;
+import org.openqa.selenium.WebDriver;
 
 /**
  * @author <a href="mailto:jhuska@redhat.com">Juraj Huska</a>
@@ -33,6 +33,12 @@ public class TakeScreenshotOnEveryActionInterceptor extends AbstractTakeScreensh
 
     private int counter = 0;
 
+    private static final List<Method> WHITE_LIST_WEB_DRIVER_METHODS = Arrays.asList(WebDriver.class.getMethods());
+
+    public TakeScreenshotOnEveryActionInterceptor(TakeScreenshot takeScreenshotEvent, TakeScreenshotAndReportService service) {
+        super(takeScreenshotEvent, service);
+    }
+
     @Override
     public Object intercept(InvocationContext context) throws Throwable {
 
@@ -40,16 +46,7 @@ public class TakeScreenshotOnEveryActionInterceptor extends AbstractTakeScreensh
         Method interceptedMethod = context.getMethod();
 
         if (isInterceptedMethodAllowed(interceptedMethod)) {
-            When when = When.ON_EVERY_ACTION;
-            metaData.setOptionalDescription(interceptedMethod.getName() + Integer.toString(counter++));
-
-            DefaultFileNameBuilder nameBuilder = DefaultFileNameBuilder.getInstance();
-            String screenshotName = nameBuilder.withMetaData(metaData).withStage(when)
-                    .withResourceIdentifier(ResourceIdentifierFactory.getResoruceIdentifier(metaData, when)).build();
-
-            beforeScreenshotTaken.fire(new BeforeScreenshotTaken(metaData));
-            takeScreenshot.fire(new TakeScreenshot(screenshotName, metaData, when));
-            afterScreenshotTaken.fire(new AfterScreenshotTaken(metaData));
+            takeScreenshotAndReport();
         }
         return result;
     }
